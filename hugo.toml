@@ -1,4 +1,4 @@
-baseURL = "https://deckblog.onrender.com/"
+baseURL = "https://decksblog.onrender.com/"
 title   = "Hello Friend NG"
 languageCode = "en-us"
 theme = "hello-friend-ng"
