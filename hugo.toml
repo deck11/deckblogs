@@ -1,6 +1,5 @@
 baseURL = "https://decksblog.onrender.com/"
 title   = "Decks Blogs"
-languageCode = "en-us"
 theme = "hello-friend-ng"
 
 PygmentsCodeFences = true
@@ -221,7 +220,7 @@ disableHugoGeneratorInject = false
   # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
   #
   [[params.social]]
-    name = "x"
+    name = "twitter"
     url  = "https://x.com/Deek_Reddy"
 
   [[params.social]]
@@ -237,7 +236,7 @@ disableHugoGeneratorInject = false
     url  = "https://www.linkedin.com/in/deekshitha-reddy-54b379253?utm_source=share&utm_campaign=share_via&utm_content=profile"
 
   [[params.social]]
-    name = "fa-file-alt"
+    name = "file"
     url  = "https://drive.google.com/drive/folders/1pfEliWIiIfxGFTqeNcPkon27h9ZmUtNO?usp=sharing"
 
 
