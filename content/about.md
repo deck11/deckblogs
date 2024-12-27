@@ -1,19 +1,15 @@
 +++
 title = "About"
-date = "2014-04-09"
+date = "2024-12-27"
 aliases = ["about-us","about-hugo","contact"]
 [ author ]
-  name = "Hugo Authors"
+  name = "Deekshitha"
 +++
 
-Hugo is the **world’s fastest framework for building websites**. It is written in Go.
+Hi, I'm Deekshitha! I'm an engineer with a passion for exploring the intersection of hardware and software. My interests include VLSI design, FPGAs and Computer Architecture. I enjoy working on projects that challenge me to innovate.  I also am into fitness and athletics, especially badminton and yoga. 
 
-It makes use of a variety of open source projects including:
+I started this blog as a space to reflect on my learnings. My hope is that, as the blog grows, it can offer insights or solutions to some of your problems too. That’s the goal for now—but I’ve got a long way to go!
 
-* https://github.com/russross/blackfriday
-* https://github.com/alecthomas/chroma
-* https://github.com/muesli/smartcrop
-* https://github.com/spf13/cobra
-* https://github.com/spf13/viper
+Feel free to explore my posts, and don’t hesitate to drop me an email if you have suggestions or enjoyed reading something here.
 
-Learn more and contribute on [GitHub](https://github.com/gohugoio).
+Have a good day!!
