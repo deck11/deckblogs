@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hello Friend NG</title>
+    <title>Decks Blogs</title>
     <link>http://localhost:1313/</link>
-    <description>Recent content on Hello Friend NG</description>
+    <description>Recent content on Decks Blogs</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Sun, 28 Sep 2014 00:00:00 +0000</lastBuildDate>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Fri, 27 Dec 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Creating a New Theme</title>
-      <link>http://localhost:1313/posts/2014/09/creating-a-new-theme/</link>
-      <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/2014/09/creating-a-new-theme/</guid>
-      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&amp;rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&amp;rsquo;t cover using CSS to style your theme.&lt;/p&gt;&#xA;&lt;p&gt;We&amp;rsquo;ll start with creating a new site with a very basic template. Then we&amp;rsquo;ll add in a few pages and posts. With small variations on that, you will be able to create many different types of web sites.&lt;/p&gt;</description>
+      <title>Designing a 5 stage pipelined 64 bit RISC-V Processor</title>
+      <link>http://localhost:1313/posts/2024/06/designing-a-5-stage-pipelined-64-bit-risc-v-processor/</link>
+      <pubDate>Fri, 28 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/2024/06/designing-a-5-stage-pipelined-64-bit-risc-v-processor/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;I’ve decided to embark on an exciting journey of building a 64-bit pipelined RISC-V processor. My implementation will adhere to the RV64I base integer instruction set, the foundational core of the RISC-V architecture.&lt;/p&gt;&#xA;&lt;p&gt;If you’re curious about the details of the RISC-V specification, feel free to check out the &lt;a href=&#34;https://riscv.org/technical/specifications/&#34;&gt;official RISC-V Instruction Set Manual&lt;/a&gt;.&lt;/p&gt;&#xA;&lt;p&gt;The &amp;lsquo;64&amp;rsquo; in RV64I means that registers, memory addresses, and integer operations are performed with values of 64-bit width. The &amp;lsquo;I&amp;rsquo; refers to the Integer base instruction set, which includes instructions for integer operations only.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Migrate to Hugo from Jekyll</title>
@@ -26,9 +26,9 @@
     <item>
       <title>About</title>
       <link>http://localhost:1313/about/</link>
-      <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 27 Dec 2024 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/about/</guid>
-      <description>&lt;p&gt;Hugo is the &lt;strong&gt;world’s fastest framework for building websites&lt;/strong&gt;. It is written in Go.&lt;/p&gt;&#xA;&lt;p&gt;It makes use of a variety of open source projects including:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/russross/blackfriday&#34;&gt;https://github.com/russross/blackfriday&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/alecthomas/chroma&#34;&gt;https://github.com/alecthomas/chroma&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/muesli/smartcrop&#34;&gt;https://github.com/muesli/smartcrop&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/cobra&#34;&gt;https://github.com/spf13/cobra&lt;/a&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/viper&#34;&gt;https://github.com/spf13/viper&lt;/a&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;Learn more and contribute on &lt;a href=&#34;https://github.com/gohugoio&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;</description>
+      <description>&lt;p&gt;Hi, I&amp;rsquo;m Deekshitha! I&amp;rsquo;m an engineer with a passion for exploring the intersection of hardware and software. My interests include VLSI design, FPGAs and Computer Architecture. I enjoy working on projects that challenge me to innovate.  I also am into fitness and athletics, especially badminton and yoga.&lt;/p&gt;&#xA;&lt;p&gt;I started this blog as a space to reflect on my learnings. My hope is that, as the blog grows, it can offer insights or solutions to some of your problems too. That’s the goal for now—but I’ve got a long way to go!&lt;/p&gt;</description>
     </item>
     <item>
       <title>(Hu)go Template Primer</title>
