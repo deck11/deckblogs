@@ -6,8 +6,138 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-        <lastBuildDate>Fri, 28 Jun 2024 00:00:00 +0000</lastBuildDate>
+        <lastBuildDate>Fri, 05 Jul 2024 00:00:00 +0000</lastBuildDate>
         <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Memory Design</title>
+            <link>http://localhost:1313/posts/2024/07/memory-design/</link>
+            <pubDate>Fri, 05 Jul 2024 00:00:00 +0000</pubDate>
+            
+            <guid>http://localhost:1313/posts/2024/07/memory-design/</guid>
+            <description>&lt;h2 id=&#34;lets-design-the-memory&#34;&gt;Lets design the memory!&lt;/h2&gt;
+&lt;p&gt;This post explains a simple cache-memory architecture designed for an RV64I-based system. The architecture consists of three modules: &lt;code&gt;l1_cache&lt;/code&gt;, &lt;code&gt;main_memory&lt;/code&gt;, and &lt;code&gt;cache_controller&lt;/code&gt;. Each module and its functionality is outlined below.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;1-l1-cache&#34;&gt;&lt;strong&gt;1. L1 Cache&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;The &lt;code&gt;l1_cache&lt;/code&gt; module represents the Level-1 (L1) cache. It provides faster access to frequently used data compared to main memory.&lt;/p&gt;
+&lt;h4 id=&#34;inputs-and-outputs&#34;&gt;&lt;strong&gt;Inputs and Outputs&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Inputs&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;clk&lt;/code&gt;: Clock signal.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mode&lt;/code&gt;: Operation type (read: &lt;code&gt;0&lt;/code&gt;, write: &lt;code&gt;1&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;address&lt;/code&gt;: A 64-bit memory address.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;write_data&lt;/code&gt;: 64-bit data to be written into the cache.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Outputs&lt;/strong&gt;:
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;read_data&lt;/code&gt;: 64-bit data read from the cache.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;hit&lt;/code&gt;: Indicates whether the requested data is found in the cache.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;stored_data&lt;/code&gt; and &lt;code&gt;stored_address&lt;/code&gt;: Represent the data and address evicted from the cache during a write.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;cache-structure&#34;&gt;&lt;strong&gt;Cache Structure&lt;/strong&gt;&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;The cache is modeled as a memory array (&lt;code&gt;l1_cache&lt;/code&gt;) with &lt;strong&gt;64 blocks&lt;/strong&gt; of 64 bytes (512 bits) each. The 64 bit address is divided into:
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Tag&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Block&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Word Offset&lt;/strong&gt;
+-This cache will be a simple directly mapped cache.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;A &lt;strong&gt;valid bit array&lt;/strong&gt; tracks whether the data in each cache block is valid.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;read-and-write-operations&#34;&gt;&lt;strong&gt;Read and Write Operations&lt;/strong&gt;&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Write Operation (&lt;code&gt;mode == 1&lt;/code&gt;)&lt;/strong&gt;:&lt;/p&gt;</description>
+            <content type="html"><![CDATA[<h2 id="lets-design-the-memory">Lets design the memory!</h2>
+<p>This post explains a simple cache-memory architecture designed for an RV64I-based system. The architecture consists of three modules: <code>l1_cache</code>, <code>main_memory</code>, and <code>cache_controller</code>. Each module and its functionality is outlined below.</p>
+<hr>
+<h3 id="1-l1-cache"><strong>1. L1 Cache</strong></h3>
+<p>The <code>l1_cache</code> module represents the Level-1 (L1) cache. It provides faster access to frequently used data compared to main memory.</p>
+<h4 id="inputs-and-outputs"><strong>Inputs and Outputs</strong></h4>
+<ul>
+<li><strong>Inputs</strong>:
+<ul>
+<li><code>clk</code>: Clock signal.</li>
+<li><code>mode</code>: Operation type (read: <code>0</code>, write: <code>1</code>).</li>
+<li><code>address</code>: A 64-bit memory address.</li>
+<li><code>write_data</code>: 64-bit data to be written into the cache.</li>
+</ul>
+</li>
+<li><strong>Outputs</strong>:
+<ul>
+<li><code>read_data</code>: 64-bit data read from the cache.</li>
+<li><code>hit</code>: Indicates whether the requested data is found in the cache.</li>
+<li><code>stored_data</code> and <code>stored_address</code>: Represent the data and address evicted from the cache during a write.</li>
+</ul>
+</li>
+</ul>
+<h4 id="cache-structure"><strong>Cache Structure</strong></h4>
+<ul>
+<li>The cache is modeled as a memory array (<code>l1_cache</code>) with <strong>64 blocks</strong> of 64 bytes (512 bits) each. The 64 bit address is divided into:
+<ul>
+<li><strong>Tag</strong></li>
+<li><strong>Block</strong></li>
+<li><strong>Word Offset</strong>
+-This cache will be a simple directly mapped cache.</li>
+</ul>
+</li>
+<li>A <strong>valid bit array</strong> tracks whether the data in each cache block is valid.</li>
+</ul>
+<h4 id="read-and-write-operations"><strong>Read and Write Operations</strong></h4>
+<ol>
+<li>
+<p><strong>Write Operation (<code>mode == 1</code>)</strong>:</p>
+<ul>
+<li>If the target block is invalid, the new tag and data are written to the cache.</li>
+<li>If the block is valid but being overwritten, the existing data and address are evicted and replaced.</li>
+<li>The specific word in the block to update is determined by the <code>Word Offset</code> in the address.</li>
+</ul>
+</li>
+<li>
+<p><strong>Read Operation (<code>mode == 0</code>)</strong>:</p>
+<ul>
+<li>On a cache <strong>hit</strong>, the corresponding word is read from the cache.</li>
+<li>On a <strong>miss</strong>, the data is fetched from main memory.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="2-main-memory"><strong>2. Main Memory</strong></h3>
+<p>The <code>main_memory</code> module models a larger, slower memory hierarchy level. It has the following features:</p>
+<h4 id="structure"><strong>Structure</strong></h4>
+<ul>
+<li><strong>Memory Size</strong>: 4GB (2^32 bytes) divided into <strong>64-byte blocks</strong>.</li>
+<li><strong>Data</strong>: Each block contains 8 words of 64 bits each.</li>
+</ul>
+<h4 id="inputs-and-outputs-1"><strong>Inputs and Outputs</strong></h4>
+<ul>
+<li>Inputs: <code>clk</code>, <code>mode</code>, <code>address</code>, <code>write_data</code>, and <code>hit</code>.</li>
+<li>Output: <code>read_data</code> provides the requested 64-bit word.</li>
+</ul>
+<h4 id="functionality"><strong>Functionality</strong></h4>
+<ul>
+<li>Reads data from the block indexed by the upper address bits.</li>
+<li>Writes data to the specified word in the block if there’s a cache miss.</li>
+</ul>
+<hr>
+<h3 id="3-cache-controller"><strong>3. Cache Controller</strong></h3>
+<p>The <code>cache_controller</code> module coordinates the interaction between <code>l1_cache</code> and <code>main_memory</code>. It:</p>
+<ul>
+<li>Instantiates both the <code>l1_cache</code> and <code>main_memory</code> modules.</li>
+<li>Ensures seamless data transfer during cache eviction by passing evicted data (<code>stored_data</code> and <code>stored_address</code>) from the cache to main memory.</li>
+<li>Directs read and write operations to the appropriate memory level based on the <code>hit</code> signal.</li>
+</ul>
+<hr>
+<h3 id="summary"><strong>Summary</strong></h3>
+<p>This architecture models a simple RV64I cache-memory hierarchy. The <code>l1_cache</code> ensures faster data access for frequently used data, while the <code>main_memory</code> provides larger, slower storage. The <code>cache_controller</code> facilitates efficient data management between these levels. This design highlights concepts like cache hits, misses, eviction policies, and tag-based indexing, which are foundational to modern CPU architectures.</p>
+]]></content>
+        </item>
         
         <item>
             <title>Designing a 5 stage pipelined 64 bit RISC-V Processor</title>
@@ -90,162 +220,6 @@ Examples include <code>JAL</code> (jump and link) and <code>JALR</code> (jump an
 <hr>
 <p>In the next post, I’ll dive deeper into the design phase, focusing on how to translate the architectural concepts.</p>
 <p>Have a good day!!</p>
-]]></content>
-        </item>
-        
-        <item>
-            <title>Migrate to Hugo from Jekyll</title>
-            <link>http://localhost:1313/posts/2014/03/migrate-to-hugo-from-jekyll/</link>
-            <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
-            
-            <guid>http://localhost:1313/posts/2014/03/migrate-to-hugo-from-jekyll/</guid>
-            <description>&lt;h2 id=&#34;move-static-content-to-static&#34;&gt;Move static content to &lt;code&gt;static&lt;/code&gt;&lt;/h2&gt;
-&lt;p&gt;Jekyll has a rule that any directory not starting with &lt;code&gt;_&lt;/code&gt; will be copied as-is to the &lt;code&gt;_site&lt;/code&gt; output. Hugo keeps all static content under &lt;code&gt;static&lt;/code&gt;. You should therefore move it all there.
-With Jekyll, something that looked like&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;▾ &amp;lt;root&amp;gt;/
-    ▾ images/
-        logo.png
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;should become&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;▾ &amp;lt;root&amp;gt;/
-    ▾ static/
-        ▾ images/
-            logo.png
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Additionally, you&amp;rsquo;ll want any files that should reside at the root (such as &lt;code&gt;CNAME&lt;/code&gt;) to be moved to &lt;code&gt;static&lt;/code&gt;.&lt;/p&gt;</description>
-            <content type="html"><![CDATA[<h2 id="move-static-content-to-static">Move static content to <code>static</code></h2>
-<p>Jekyll has a rule that any directory not starting with <code>_</code> will be copied as-is to the <code>_site</code> output. Hugo keeps all static content under <code>static</code>. You should therefore move it all there.
-With Jekyll, something that looked like</p>
-<pre><code>▾ &lt;root&gt;/
-    ▾ images/
-        logo.png
-</code></pre>
-<p>should become</p>
-<pre><code>▾ &lt;root&gt;/
-    ▾ static/
-        ▾ images/
-            logo.png
-</code></pre>
-<p>Additionally, you&rsquo;ll want any files that should reside at the root (such as <code>CNAME</code>) to be moved to <code>static</code>.</p>
-<h2 id="create-your-hugo-configuration-file">Create your Hugo configuration file</h2>
-<p>Hugo can read your configuration as JSON, YAML or TOML. Hugo supports parameters custom configuration too. Refer to the <a href="/overview/configuration/">Hugo configuration documentation</a> for details.</p>
-<h2 id="set-your-configuration-publish-folder-to-_site">Set your configuration publish folder to <code>_site</code></h2>
-<p>The default is for Jekyll to publish to <code>_site</code> and for Hugo to publish to <code>public</code>. If, like me, you have <a href="http://blog.blindgaenger.net/generate_github_pages_in_a_submodule.html"><code>_site</code> mapped to a git submodule on the <code>gh-pages</code> branch</a>, you&rsquo;ll want to do one of two alternatives:</p>
-<ol>
-<li>
-<p>Change your submodule to point to map <code>gh-pages</code> to public instead of <code>_site</code> (recommended).</p>
-<pre><code> git submodule deinit _site
- git rm _site
- git submodule add -b gh-pages git@github.com:your-username/your-repo.git public
-</code></pre>
-</li>
-<li>
-<p>Or, change the Hugo configuration to use <code>_site</code> instead of <code>public</code>.</p>
-<pre><code> {
-     ..
-     &quot;publishdir&quot;: &quot;_site&quot;,
-     ..
- }
-</code></pre>
-</li>
-</ol>
-<h2 id="convert-jekyll-templates-to-hugo-templates">Convert Jekyll templates to Hugo templates</h2>
-<p>That&rsquo;s the bulk of the work right here. The documentation is your friend. You should refer to <a href="http://jekyllrb.com/docs/templates/">Jekyll&rsquo;s template documentation</a> if you need to refresh your memory on how you built your blog and <a href="/layout/templates/">Hugo&rsquo;s template</a> to learn Hugo&rsquo;s way.</p>
-<p>As a single reference data point, converting my templates for <a href="http://heyitsalex.net/">heyitsalex.net</a> took me no more than a few hours.</p>
-<h2 id="convert-jekyll-plugins-to-hugo-shortcodes">Convert Jekyll plugins to Hugo shortcodes</h2>
-<p>Jekyll has <a href="http://jekyllrb.com/docs/plugins/">plugins</a>; Hugo has <a href="/doc/shortcodes/">shortcodes</a>. It&rsquo;s fairly trivial to do a port.</p>
-<h3 id="implementation">Implementation</h3>
-<p>As an example, I was using a custom <a href="https://github.com/alexandre-normand/alexandre-normand/blob/74bb12036a71334fdb7dba84e073382fc06908ec/_plugins/image_tag.rb"><code>image_tag</code></a> plugin to generate figures with caption when running Jekyll. As I read about shortcodes, I found Hugo had a nice built-in shortcode that does exactly the same thing.</p>
-<p>Jekyll&rsquo;s plugin:</p>
-<pre><code>module Jekyll
-  class ImageTag &lt; Liquid::Tag
-    @url = nil
-    @caption = nil
-    @class = nil
-    @link = nil
-    // Patterns
-    IMAGE_URL_WITH_CLASS_AND_CAPTION =
-    IMAGE_URL_WITH_CLASS_AND_CAPTION_AND_LINK = /(\w+)(\s+)((https?:\/\/|\/)(\S+))(\s+)&quot;(.*?)&quot;(\s+)-&gt;((https?:\/\/|\/)(\S+))(\s*)/i
-    IMAGE_URL_WITH_CAPTION = /((https?:\/\/|\/)(\S+))(\s+)&quot;(.*?)&quot;/i
-    IMAGE_URL_WITH_CLASS = /(\w+)(\s+)((https?:\/\/|\/)(\S+))/i
-    IMAGE_URL = /((https?:\/\/|\/)(\S+))/i
-    def initialize(tag_name, markup, tokens)
-      super
-      if markup =~ IMAGE_URL_WITH_CLASS_AND_CAPTION_AND_LINK
-        @class   = $1
-        @url     = $3
-        @caption = $7
-        @link = $9
-      elsif markup =~ IMAGE_URL_WITH_CLASS_AND_CAPTION
-        @class   = $1
-        @url     = $3
-        @caption = $7
-      elsif markup =~ IMAGE_URL_WITH_CAPTION
-        @url     = $1
-        @caption = $5
-      elsif markup =~ IMAGE_URL_WITH_CLASS
-        @class = $1
-        @url   = $3
-      elsif markup =~ IMAGE_URL
-        @url = $1
-      end
-    end
-    def render(context)
-      if @class
-        source = &quot;&lt;figure class='#{@class}'&gt;&quot;
-      else
-        source = &quot;&lt;figure&gt;&quot;
-      end
-      if @link
-        source += &quot;&lt;a href=\&quot;#{@link}\&quot;&gt;&quot;
-      end
-      source += &quot;&lt;img src=\&quot;#{@url}\&quot;&gt;&quot;
-      if @link
-        source += &quot;&lt;/a&gt;&quot;
-      end
-      source += &quot;&lt;figcaption&gt;#{@caption}&lt;/figcaption&gt;&quot; if @caption
-      source += &quot;&lt;/figure&gt;&quot;
-      source
-    end
-  end
-end
-Liquid::Template.register_tag('image', Jekyll::ImageTag)
-</code></pre>
-<p>is written as this Hugo shortcode:</p>
-<pre><code>&lt;!-- image --&gt;
-&lt;figure {{ with .Get &quot;class&quot; }}class=&quot;{{.}}&quot;{{ end }}&gt;
-    {{ with .Get &quot;link&quot;}}&lt;a href=&quot;{{.}}&quot;&gt;{{ end }}
-        &lt;img src=&quot;{{ .Get &quot;src&quot; }}&quot; {{ if or (.Get &quot;alt&quot;) (.Get &quot;caption&quot;) }}alt=&quot;{{ with .Get &quot;alt&quot;}}{{.}}{{else}}{{ .Get &quot;caption&quot; }}{{ end }}&quot;{{ end }} /&gt;
-    {{ if .Get &quot;link&quot;}}&lt;/a&gt;{{ end }}
-    {{ if or (or (.Get &quot;title&quot;) (.Get &quot;caption&quot;)) (.Get &quot;attr&quot;)}}
-    &lt;figcaption&gt;{{ if isset .Params &quot;title&quot; }}
-        {{ .Get &quot;title&quot; }}{{ end }}
-        {{ if or (.Get &quot;caption&quot;) (.Get &quot;attr&quot;)}}&lt;p&gt;
-        {{ .Get &quot;caption&quot; }}
-        {{ with .Get &quot;attrlink&quot;}}&lt;a href=&quot;{{.}}&quot;&gt; {{ end }}
-            {{ .Get &quot;attr&quot; }}
-        {{ if .Get &quot;attrlink&quot;}}&lt;/a&gt; {{ end }}
-        &lt;/p&gt; {{ end }}
-    &lt;/figcaption&gt;
-    {{ end }}
-&lt;/figure&gt;
-&lt;!-- image --&gt;
-</code></pre>
-<h3 id="usage">Usage</h3>
-<p>I simply changed:</p>
-<pre><code>{% image full http://farm5.staticflickr.com/4136/4829260124_57712e570a_o_d.jpg &quot;One of my favorite touristy-type photos. I secretly waited for the good light while we were &quot;having fun&quot; and took this. Only regret: a stupid pole in the top-left corner of the frame I had to clumsily get rid of at post-processing.&quot; -&gt;http://www.flickr.com/photos/alexnormand/4829260124/in/set-72157624547713078/ %}
-</code></pre>
-<p>to this (this example uses a slightly extended version named <code>fig</code>, different than the built-in <code>figure</code>):</p>
-<pre><code>{{% fig class=&quot;full&quot; src=&quot;http://farm5.staticflickr.com/4136/4829260124_57712e570a_o_d.jpg&quot; title=&quot;One of my favorite touristy-type photos. I secretly waited for the good light while we were having fun and took this. Only regret: a stupid pole in the top-left corner of the frame I had to clumsily get rid of at post-processing.&quot; link=&quot;http://www.flickr.com/photos/alexnormand/4829260124/in/set-72157624547713078/&quot; %}}
-</code></pre>
-<p>As a bonus, the shortcode named parameters are, arguably, more readable.</p>
-<h2 id="finishing-touches">Finishing touches</h2>
-<h3 id="fix-content">Fix content</h3>
-<p>Depending on the amount of customization that was done with each post with Jekyll, this step will require more or less effort. There are no hard and fast rules here except that <code>hugo server --watch</code> is your friend. Test your changes and fix errors as needed.</p>
-<h3 id="clean-up">Clean up</h3>
-<p>You&rsquo;ll want to remove the Jekyll configuration at this point. If you have anything else that isn&rsquo;t used, delete it.</p>
-<h2 id="a-practical-example-in-a-diff">A practical example in a diff</h2>
-<p><a href="http://heyitsalex.net/">Hey, it&rsquo;s Alex</a> was migrated in less than a <em>father-with-kids day</em> from Jekyll to Hugo. You can see all the changes (and screw-ups) by looking at this <a href="https://github.com/alexandre-normand/alexandre-normand/compare/869d69435bd2665c3fbf5b5c78d4c22759d7613a...b7f6605b1265e83b4b81495423294208cc74d610">diff</a>.</p>
 ]]></content>
         </item>
         
